@@ -1,6 +1,7 @@
 # Team Quotes
-
+```
 <erekalper> What the fuck are you doing
+```
 
 ```
 <slifty> man, I basically did the math equivalent of closing my eyes and wandering until I found a donut shop
