@@ -1,5 +1,9 @@
 /** PLEASE REFER TO GLOSSARY.md FOR A GLOSSARY OF TERMS **/
 
+
+// We expect there to be lots of errors, so we've defined some custom ones
+var ChordValidationError = require("./errors/ChordValidationError");
+
 /**
  * Given a BIFFUD Chord Index, return a chord.
  * @param  integer index     an integer between 0 and 109735
@@ -13,7 +17,9 @@ var chordFromBci = function(index) {}
  * @param  [integer] chord    an array of three semitone offsets
  * @return integer            an integer between 0 and 109735
  */
-var bciFromChord = function(chord) {}
+var bciFromChord = function(chord) {
+
+}
 
 
 /**
@@ -77,6 +83,46 @@ var coordsFromWav = function(url) {}
  */
 var notesFromChord = function(chord, format) {}
 
+
+/**
+ * Given an array of integers, ensures that it does not violate constraints of an 88 key piano keyboard
+ * @param  [integer] chord  an array of three semitone offsets
+ * @return boolean | error  rue if valid; throws an error otherwise
+ * 
+ */
+var validateChord = function(chord) {
+
+  // is someone trying to pull some null trickery?
+  if(chord === undefined || chord === null)
+    throw new ChordValidationError("Your chord isn't even defined.");
+
+  // do you even array?
+  if(!Array.isArray(chord))
+    throw new ChordValidationError("I'm not seeing an array here. Chords need to be an array.");
+
+  // Make sure the chord length is 3.  We don't give a shit about Dyads, Tetrads, Pentads, and all those other posers
+  if(chord.length != 3)
+    throw new ChordValidationError("As far as we're concerned chords have to be three notes.  Mozart told us.");
+
+  // Make sure none of the offsets are negative
+  var totalOffset = 0;
+  for(var x in chord) {
+    if(chord[x] <0)
+      throw new ChordValidationError("Negative offsets are NOT ALLOWED.");
+
+    // While we're here, let's keep track of the total offset.
+    totalOffset += chord[x];
+  }
+
+  // Make sure the offsets add up to less than 85.
+  // DONT ASK QUESTIONS.
+  // Fine.  85 is 88 minus the number of notes (3)
+  if(totalOffset > 85)
+    throw new ChordValidationError("This chord can't be played on an 88 key piano, the offsets add up to more than 85.");
+
+  // We got here, so it's either a chord or it's wearing a really good disguise
+  return true;
+}
 
 // Export these methods for the world to use
 if (typeof exports !== "undefined") {
