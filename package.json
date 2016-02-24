@@ -1,0 +1,37 @@
+{
+  "name": "geohash-notes",
+  "version": "0.0.1",
+  "description": "Convert geolocations to chords, and back",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BadIdeaFactory/geohash-notes.git"
+  },
+  "keywords": [
+    "geolocation",
+    "chords",
+    "notes",
+    "music",
+    "locations"
+  ],
+  "author": "Bad Idea Factory",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BadIdeaFactory/geohash-notes/issues"
+  },
+  "homepage": "https://github.com/BadIdeaFactory/geohash-notes#readme",
+  "readme": "README.md",
+  "maintainers": [
+    {
+      "name": "Baron Oldenburg",
+      "email": "baron.oldenburg@gmail.com"
+    },
+    {
+      "name": "Dan Schultz",
+      "email": "slifty@gmail.com"
+    }
+  ]
+}
