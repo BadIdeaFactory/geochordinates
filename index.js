@@ -19,6 +19,20 @@ var chordFromBci = function(index) {}
  */
 var bciFromChord = function(chord) {
 
+  // Step 1: Check to make sure this chord is legit
+  validateChord(chord);
+
+  // Step 2: Break out the offsets
+  // TODO: figure out how to do this for ANY number of notes, not just 3
+  var x = chord[0];
+  var y = chord[1];
+  var z = chord[2];
+
+  // Step 3: Plug the index into the magic BCI formula.
+  // (Just smile, nod, and think of donuts)
+  var bci = x+86*y-(y+z-1)*(y+z)/2+7396*z+(z-1)*(z-1+1)*(2*(z-1)+1)/6-z*(85+z)*(85+z-1)/2+86*(z)*(z-1)/2+(z-2)*(z-1)*(z)/ 3;
+
+  return bci;
 }
 
 
