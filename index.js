@@ -3,13 +3,29 @@
 
 // We expect there to be lots of errors, so we've defined some custom ones
 var ChordValidationError = require("./errors/ChordValidationError");
+var BciValidationError = require("./errors/BciValidationError");
 
 /**
  * Given a BIFFUD Chord Index, return a chord.
- * @param  integer index     an integer between 0 and 109735
+ * @param  integer bci       an integer between 0 and 109735
  * @return [integer]         an array of three semitone offsets
  */
-var chordFromBci = function(index) {}
+var chordFromBci = function(bci) {
+
+  // Check to make sure this bci is change we can believe in.
+  validateBci(bci);
+
+  // Get the third note offset
+  var z = 0;
+
+  // Get the second note offset
+  var y = 0;
+
+  // Get the first note offset
+  var x = 0;
+
+  return [x,y,z];
+}
 
 
 /**
@@ -19,18 +35,18 @@ var chordFromBci = function(index) {}
  */
 var bciFromChord = function(chord) {
 
-  // Step 1: Check to make sure this chord is legit
+  // Check to make sure this chord is legit
   validateChord(chord);
 
-  // Step 2: Break out the offsets
+  // Break out the offsets
   // TODO: figure out how to do this for ANY number of notes, not just 3
   var x = chord[0];
   var y = chord[1];
   var z = chord[2];
 
-  // Step 3: Plug the index into the magic BCI formula.
+  // Plug the index into the magic BCI formula.
   // (Just smile, nod, and think of donuts)
-  var bci = x+86*y-(y+z-1)*(y+z)/2+7396*z+(z-1)*(z-1+1)*(2*(z-1)+1)/6-z*(85+z)*(85+z-1)/2+86*(z)*(z-1)/2+(z-2)*(z-1)*(z)/ 3;
+  var bci = x+86*y-(y+z-1)*(y+z)/2+7396*z+(z-1)*(z)*(2*z)/6-z*(85+z)*(84+z)/2+86*(z)*(z-1)/2+(z-2)*(z-1)*(z)/ 3;
 
   return bci;
 }
@@ -101,7 +117,7 @@ var notesFromChord = function(chord, format) {}
 /**
  * Given an array of integers, ensures that it does not violate constraints of an 88 key piano keyboard
  * @param  [integer] chord  an array of three semitone offsets
- * @return boolean | error  rue if valid; throws an error otherwise
+ * @return boolean | error  true if valid; throws an error otherwise
  * 
  */
 var validateChord = function(chord) {
@@ -137,6 +153,40 @@ var validateChord = function(chord) {
   // We got here, so it's either a chord or it's wearing a really good disguise
   return true;
 }
+
+
+/**
+ * Given a number, ensures that it is a valid BCI
+ * @param  integer bci      the bci we want to validate
+ * @return boolean | error  true if valid; throws an error otherwise
+ * 
+ */
+var validateBci = function(bci) {
+
+  // Is someone trying to pull some null trickery?
+  if(bci === undefined || bci === null)
+    throw new BciValidationError("This BIFFUD Chord Index isn't defined.");
+
+  // Are we dealing with a number here?
+  if(isNaN(bci))
+    throw new BciValidationError("Your supposed BIFFUD Chord Index wasn't even a number.");
+
+
+  // Is it an integer?
+  var x = parseFloat(bci);
+  if((x | 0) !== x)
+    throw new BciValidationError("It is integral that the BIFFUD Chord Index be an integer.");
+
+
+  // Check the range
+  if(bci < 0 || bci > 109735)
+    throw new BciValidationError("A BIFFUD Chord Index has to be between 0 and 109735.  We can't tell you why.");
+
+  // We have a valid BCI!
+  return true;
+}
+
+chordFromBci(-1);
 
 // Export these methods for the world to use
 if (typeof exports !== "undefined") {
